@@ -1,6 +1,7 @@
 package problems;
 import java.util.HashSet;
 
+/* problem 37: Sudoku Solver */
 public class SudokuSolver {
     public HashSet[] rowSet;
     public HashSet[] colSet;
