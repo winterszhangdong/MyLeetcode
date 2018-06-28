@@ -14,32 +14,41 @@ import utils.ListNode;
  * Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
  * Output: 7 -> 0 -> 8
  * Explanation: 342 + 465 = 807.
+ *
  */
 public class AddTwoNumbers {
-    public ListNode solution(ListNode l1, ListNode l2) {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode tmp1 = l1;
         ListNode tmp2 = l2;
         int carry = 0;
-        int sum;
 
-        while (tmp1.next != null && tmp2.next != null) {
-            sum = tmp1.val + tmp2.val + carry;
-            carry = sum / 10;
-            sum %= 10;
-            tmp1.val = sum;
+        while (true) {
+            tmp1.val = tmp1.val + tmp2.val + carry;
+            carry = tmp1.val / 10;
+            tmp1.val %= 10;
+            if (tmp1.next == null || tmp2.next == null)
+                break;
             tmp1 = tmp1.next;
             tmp2 = tmp2.next;
         }
 
-        if (tmp1.next == null && tmp2.next == null) {
-            if (carry != 0) {
-                tmp1.next = new ListNode(carry, null);
-            }
-        } else if (tmp1.next != null) {
-            if (carry != 0) {
-                
+        if (tmp1.next == null)
+            tmp1.next = tmp2.next;
+
+        if (carry != 0 && tmp1.next !=  null) {
+            tmp1 = tmp1.next;
+            while (true) {
+                tmp1.val += carry;
+                carry = tmp1.val / 10;
+                tmp1.val %= 10;
+                if (tmp1.next == null)
+                    break;
+                tmp1 = tmp1.next;
             }
         }
+
+        if (carry != 0)
+            tmp1.next = new ListNode(carry);
 
         return l1;
     }
