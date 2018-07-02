@@ -1,7 +1,6 @@
 package problems;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 
 /**
  * problem 76: Minimum Window Substring
@@ -19,48 +18,40 @@ import java.util.HashSet;
  */
 public class MinimumWindowSubstring {
     public String minWindow(String s, String t) {
-        HashSet<Character> targetSet = new HashSet<Character>();
-        ArrayList<Integer> indexList = new ArrayList<Integer>();
-        int minLen = s.length();
-        int stopPos = minLen - t.length();
+        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+        int minLen = s.length() + 1;
         int start = 0;
 
-        for (int i = 0; i < t.length(); i++) {
-            targetSet.add(t.charAt(i));
+        for (char c : t.toCharArray()) {
+            int nums = map.containsKey(c) ? map.get(c) + 1 : 1;
+            map.put(c, nums);
         }
 
-        for (int i = 0; i < s.length(); i++)
-            if (targetSet.contains(s.charAt(i)))
-                indexList.add(i);
-        if (indexList.isEmpty())
+        int left = 0;
+        int count = 0;
+        for (int right = 0; right < s.length(); right++) {
+            if (map.containsKey(s.charAt(right))) {
+                map.put(s.charAt(right), map.get(s.charAt(right)) - 1);
+                if (map.get(s.charAt(right)) >= 0)
+                    count++;
+                while (count == t.length()) {
+                    if (map.containsKey(s.charAt(left))) {
+                        map.put(s.charAt(left), map.get(s.charAt(left)) + 1);
+                        if (map.get(s.charAt(left)) > 0)
+                            count--;
+                        if ((right - left + 1) < minLen) {
+                            minLen = right - left + 1;
+                            start =left;
+                        }
+                    }
+                    left++;
+                }
+            }
+        }
+
+        if (minLen > s.length())
             return "";
 
-        int i = 0;
-        int j = 1;
-        int len;
-        char leftChar;
-        char rightChar;
-        targetSet.remove(s.charAt(indexList.get(0)));
-        while (indexList.get(i) <= stopPos) {
-            leftChar = s.charAt(indexList.get(i++));
-            while (!targetSet.isEmpty() && j < indexList.size()) {
-                rightChar = s.charAt(indexList.get(j++));
-                if (targetSet.contains(rightChar))
-                    targetSet.remove(rightChar);
-                else
-                if (leftChar == rightChar)
-                    leftChar = s.charAt(indexList.get(i++));
-            }
-            len = indexList.get(j-1) - indexList.get(i-1) + 1;
-            if (len < minLen) {
-                minLen = len;
-                start = indexList.get(i-1);
-            }
-            if (j >= indexList.size())
-                break;
-            targetSet.add(leftChar);
-        }
-
-        return s.substring(start, start + minLen);
+        return s.substring(start, start+minLen);
     }
 }
