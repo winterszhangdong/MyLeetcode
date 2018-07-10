@@ -2,7 +2,19 @@ package problems;
 
 import java.util.Stack;
 /**
- * Created by winters on 2018/7/9.
+ * problem 85: Maximal Rectangle
+ * Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.
+ *
+ * Example:
+ *
+ * Input:
+ * [
+ *   ["1","0","1","0","0"],
+ *   ["1","0","1","1","1"],
+ *   ["1","1","1","1","1"],
+ *   ["1","0","0","1","0"]
+ * ]
+ * Output: 6
  */
 public class MaximalRectangle {
     public int solution(char[][] matrix) {
@@ -10,8 +22,8 @@ public class MaximalRectangle {
             return 0;
 
         int[] h = new int[matrix[0].length];
-        int maxArea = 0;
         Stack<Integer> stack = new Stack<Integer>();
+        int maxArea = 0;
 
         for (char[] row : matrix) {
             for (int i = 0; i < h.length; i++) {
@@ -21,28 +33,15 @@ public class MaximalRectangle {
                     h[i] = 0;
             }
 
-            for (int i = 0; i < h.length; i++) {
-                if (h[i] != 0 && ((stack.isEmpty() || h[i] <= stack.peek()))) {
-                    stack.push(h[i]);
-                } else if (h[i] != 0) {
-                    maxArea = Math.max(maxArea, stack.peek() * stack.size());
-                    while (!stack.isEmpty())
-                        stack.pop();
-                    if (h[i] != 0)
-                        stack.push(h[i]);
-                } else if (h[i] == 0 && !stack.isEmpty()) {
-                    maxArea = Math.max(maxArea, stack.peek() * stack.size());
-                    while (!stack.isEmpty())
-                        stack.pop();
+            for (int i = 0; i <= h.length; i++) {
+                while (!stack.isEmpty() && (i == h.length || h[i] < h[stack.peek()])) {
+                    int height = h[stack.pop()];
+                    int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+                    maxArea = Math.max(maxArea, height*width);
                 }
+                if (i != h.length)
+                    stack.push(i);
             }
-
-            if (!stack.isEmpty()) {
-                maxArea = Math.max(maxArea, stack.peek() * stack.size());
-                while (!stack.isEmpty())
-                    stack.pop();
-            }
-
         }
 
         return maxArea;
