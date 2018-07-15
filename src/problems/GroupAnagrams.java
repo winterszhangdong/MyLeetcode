@@ -1,6 +1,7 @@
 package problems;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -8,25 +9,35 @@ import java.util.List;
  */
 public class GroupAnagrams {
     public List<List<String>> solution(String[] strs) {
-        ArrayList<List<String>> resultList = new ArrayList<List<String>>();
-        ArrayList<Integer[]> countsList = new ArrayList<Integer[]>();
-//        int[][] counts = new int[strs.length][26];
+        HashMap<String, List<String>> map = new HashMap<String, List<String>>();
         for (String s : strs) {
+            int[] counts = new int[26];
             for (char c : s.toCharArray()) {
-                int[] counts = new int[26];
                 int index = c - 'a';
                 counts[index]++;
             }
 
-            for (int i = 0; i < countsList.size(); i++) {
-                if (s.length() == resultList.get(i).get(0).length()) {
-                    for (int j = 0; j < s.length(); j++) {
-                        if (s.charAt(j) != countsList.get(i)[j]) {
-
-                        }
-                    }
-                }
+            StringBuilder sb = new StringBuilder("");
+            for (int n : counts) {
+                sb.append("#");
+                sb.append(n);
             }
+
+            String converted = sb.toString();
+            if (!map.containsKey(converted))
+                map.put(converted, new ArrayList<String>());
+            map.get(converted).add(s);
         }
+
+        return new ArrayList<List<String>>(map.values());
+    }
+
+
+    public static void main(String[] args) {
+        GroupAnagrams test = new GroupAnagrams();
+        String[] strs = new String[]{"eat", "tea", "tan", "ate", "nat", "bat"};
+        String[] strs2 = new String[]{};
+        for (List<String> list : test.solution((strs2)))
+            System.out.println(list);
     }
 }
