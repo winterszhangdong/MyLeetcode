@@ -1,5 +1,8 @@
 package problems;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * problem 39: Combination Sum
  *
@@ -31,4 +34,22 @@ package problems;
  * ]
  */
 public class CombinationSum {
+    public List<List<Integer>> solution(int[] candidates, int target) {
+        List<List<Integer>> list = new ArrayList<List<Integer>>();
+        List<Integer> curList = new ArrayList<Integer>();
+        combine(list, curList, candidates, 0, target);
+        return list;
+    }
+
+    public void combine(List<List<Integer>> list, List<Integer> curList, int[] candidates, int start, int rest) {
+        if (rest == 0)
+            list.add(new ArrayList<Integer>(curList));
+        else if (rest < 0){
+            for (int i = start; i < candidates.length; i++) {
+                curList.add(candidates[i]);
+                combine(list, curList, candidates, i, rest - candidates[i]);
+                curList.remove(curList.size() - 1);
+            }
+        }
+    }
 }
