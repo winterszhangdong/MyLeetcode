@@ -55,26 +55,28 @@ import java.util.Arrays;
  */
 public class ValidSudoku {
     public boolean solution(char[][] board) {
-        boolean[][] matrix = new boolean[9][9];
-        for (boolean[] rows : matrix)
-            Arrays.fill(rows, false);
+        boolean[][] cols = new boolean[9][9];
+        for (boolean[] col : cols)
+            Arrays.fill(col, false);
 
         boolean[][][] regions = new boolean[3][3][9];
         for (boolean[][] regionMatrix : regions)
             for (boolean[] region : regionMatrix)
                 Arrays.fill(region, false);
 
+        boolean[] row = new boolean[9];
         for (int i = 0; i < board.length; i++) {
+            Arrays.fill(row, false);
             for (int j = 0; j < board[0].length; j++) {
                 if (board[i][j] == '.')
                     continue;
 
                 int val = board[i][j] - '1';
-                if (matrix[i][val] || matrix[val][j] || regions[i/3][j/3][val])
+                if (row[val] || cols[val][j] || regions[i/3][j/3][val])
                     return false;
                 else {
-                    matrix[i][val] = true;
-                    matrix[val][j] = true;
+                    row[val] = true;
+                    cols[val][j] = true;
                     regions[i/3][j/3][val] = true;
                 }
             }
