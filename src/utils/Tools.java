@@ -39,7 +39,6 @@ public class Tools {
         }
 
         return root;
-
     }
 
     public static void sort(int[] nums) {
