@@ -21,6 +21,8 @@ package problems;
  */
 public class FindTheDuplicateNumber {
     public int solution(int[] nums) {
+        // the same as problem "Linked List Cycle II"
+        // think nums like a linked list
         int quick = nums[0];
         int slow = nums[0];
         do {
