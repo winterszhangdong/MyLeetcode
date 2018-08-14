@@ -27,4 +27,26 @@ package problems;
  * Output: "1211"
  */
 public class CountAndSay {
+    public String solution(int n) {
+        StringBuilder curr = new StringBuilder();
+        curr.append("1");
+        StringBuilder pre;
+        for (int i = 1; i < n; i++) {
+            pre = curr;
+            curr = new StringBuilder();
+            for (int j = 0; j < pre.length(); j++) {
+                int count = 1;
+                while (j < pre.length() - 1 && pre.charAt(j) == pre.charAt(j+1)) {
+                    j++;
+                    count++;
+                    if (j == pre.length() - 2)
+                        break;
+                }
+                curr.append(count);
+                curr.append(pre.charAt(j));
+            }
+        }
+
+        return curr.toString();
+    }
 }
