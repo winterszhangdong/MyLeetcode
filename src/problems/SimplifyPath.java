@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * In this case, you should ignore redundant slashes and return "/home/foo".
  */
 public class SimplifyPath {
-    public String simplifyPath(String path) {
+    public String solution(String path) {
         String[] paths = path.split("/+");
         ArrayList<String> pathList = new ArrayList<String>();
         for (String p : paths) {
