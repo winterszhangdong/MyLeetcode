@@ -25,7 +25,7 @@ import utils.TreeNode;
  */
 public class SymmetricTree {
     public boolean isSymmetric(TreeNode root) {
-        return root == null ? true : check(root.left, root.right);
+        return root == null || check(root.left, root.right);
     }
 
     private boolean check(TreeNode r1, TreeNode r2) {
